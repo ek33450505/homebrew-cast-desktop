@@ -1,10 +1,10 @@
 cask "cast-desktop" do
-  version "1.0.0"
-  sha256 :no_check # TODO: replace with actual SHA256 after cutting the release DMG
+  version "1.2.9"
+  sha256 "b091733da7f9e8cd215c283eec66a2e4c600ce813e799f50f76f8ddb3821c1e7"
 
-  url "https://github.com/ek33450505/cast-desktop/releases/download/v#{version}/Cast.Desktop_#{version}_aarch64.dmg"
+  url "https://github.com/ek33450505/cast-desktop/releases/download/v#{version}/Cast-Desktop-aarch64-darwin.tar.gz"
   name "Cast Desktop"
-  desc "Desktop observability companion for the CAST multi-agent Claude Code framework"
+  desc "The desktop app for CAST — every agent signal in one window"
   homepage "https://github.com/ek33450505/cast-desktop"
 
   livecheck do
@@ -14,11 +14,13 @@ cask "cast-desktop" do
 
   app "Cast Desktop.app"
 
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Cast Desktop.app"]
+  end
+
   zap trash: [
-    "~/Library/Application Support/com.cast-desktop.app",
-    "~/Library/Logs/com.cast-desktop.app",
-    "~/Library/Preferences/com.cast-desktop.app.plist",
-    "~/Library/Saved Application State/com.cast-desktop.app.savedState",
-    "~/Library/WebKit/com.cast-desktop.app",
+    "~/Library/Application Support/com.cast-desktop",
+    "~/Library/Logs/cast-desktop",
   ]
 end
